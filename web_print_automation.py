@@ -23,21 +23,51 @@ else:
     today_year = str(today_year); day = str(day); today_month = str(today_month)
 day = str(day); today_month = str(today_month); print(f"Current day month and year: {day}-{today_month}-{today_year}")
 # Open a selenium browser for 'desbravador' with code of your pousada/hotel and check if user have a saved login 
-def open_browser__1(code, user = None):
+def open_browser__1(code, login=None, password=None):
     # Set the DRIVER and get in DESBRAVADOR for respective code
     global driver
-    driver = webdriver.Chrome(options); driver.get(f'https://desbravadorweb.com.br/acesso/{code}');
-    if (user == "isaac" and code == code_ama): 
-        driver.find_element(By.XPATH, "//*[@id=':r0:']").send_keys("isaacjoaofreitas@gmail.com"); driver.find_element(By.XPATH, "//*[@id=':r1:']").send_keys("Batata0800")
-        butt1 = driver.find_element(By.XPATH, "//*[@id='login']/div/div[2]/div/div/form/div[6]/button"); butt1.click(); sleep(1.2)
+    driver = webdriver.Chrome(options); driver.get(f'https://desbravadorweb.com.br/acesso/{code}'); sleep(2)
+    log = driver.find_element(By.XPATH, "//*[@id=':r0:']")
+    passw = driver.find_element(By.XPATH, "//*[@id=':r1:']")
+    butt1 = driver.find_element(By.XPATH, "//*[@id='login']/div/div[2]/div/div/form/div[6]/button")
+    if (login == "isaac784" and code == code_ama): 
+        print("Openning from secrets...")
+        log.send_keys("isaacjoaofreitas@gmail.com"); passw.send_keys("Batata0800")
+        butt1.click(); sleep(1.2)
         try:
             butt1.click()
         except:
-            print("Good.")
+            print("Goods 0.")
+        sleep(2); driver.implicitly_wait(2)
+    if (login == "isaac784" and code == code_atl): 
+        print("Openning from secrets...")
+        log.send_keys("isaacjoaofreitas@gmail.com"); passw.send_keys("Batata0800")
+        butt1.click(); sleep(1.2)
+        try:
+            butt1.click()
+        except:
+            print("Goods 1.")
         sleep(2); driver.implicitly_wait(2)
     else:
-        WebDriverWait(driver, 99999).until(EC.url_contains(("/#/")))
-        sleep(2); driver.implicitly_wait(2)
+        try:
+            print("try1")
+            if password == '':
+                print("nonepass")
+            if login =='' or 'isaac784':
+                print('nonelog')
+            else:
+                print(f"Loggin in with: \nuser:{login} ",'/',f"password:{password}")
+                log.send_keys(login)
+                passw.send_keys(password)
+                butt1.click(); sleep(1.2)
+                try:
+                    butt1.click()
+                except:
+                    print('butt 1 clicked with login and passwords!')
+        except:
+            print('over1')
+            WebDriverWait(driver, 99999).until(EC.url_contains(("/#/")))
+            sleep(2); driver.implicitly_wait(2)
 # Get all 'codes' From href in check-ins from today(actual day)
 def get_checkin_href__2():
     # Search and collect all links from reservs from 'day'(intended to be actual date)
@@ -159,7 +189,7 @@ def close():
 #sleep(2)
 #rel_camareira()
 #sleep(2)
-print("ALL FOR ALL DONE!")
+print("All web_automation functions defined with sucess!")
 #check_ins(code_ama, user_='isaac')
 #sleep(200)
 
