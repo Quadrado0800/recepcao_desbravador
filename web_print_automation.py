@@ -146,9 +146,8 @@ def view_acess_reserv__3() -> bool:
     driver.execute_script("alert('All check-ins printed!')")
     return True
 # Print all check-in
-def check_ins(code_, user_in = None) -> bool:
-    # print-out all check-ins in 'code_' selected and return true if concluded with sucess
-    open_browser__1(code_, user_in)
+def check_ins() -> bool:
+    # print-out all check-ins and return true if concluded with sucess
     get_checkin_href__2()
     view_acess_reserv__3()
     return view_acess_reserv__3

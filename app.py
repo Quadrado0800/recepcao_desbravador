@@ -4,7 +4,7 @@ from tkinter import *; from customtkinter import *; from web_print_automation im
 #driver = driver
 def main_window():
     app = CTk()
-    app.title('New app!')
+    app.title('Recepc for Recepcionists, made easy.')
     app.geometry('600x500')
 
     check_1_var = StringVar(value='Off')
@@ -18,13 +18,17 @@ def main_window():
         button_label_0.grid(row=0, column=0, padx=10, pady=(10, 0), sticky='nsew')
         print("Submted!")
     def click_1():
+        save_user_info()
         print("clicked button 1!")
         if optionmenu_1_ == 'Amada Terra':
             code_selected = code_ama; print(f"you've selected code:{code_selected}, for 'Amada terra'")
+            app.title("Welcome! You're in 'Amada terra'")
         if optionmenu_1_ == 'Flor de magnolia':
             code_selected = code_flo; print(f"you've selected code:{code_selected}, for 'Flor de magnolia'")
+            app.title("Welcome! You're in 'Flor de magnolia'")
         if optionmenu_1_ == 'Atlantic':
             code_selected = code_atl; print(f"you've selected code:{code_selected}, for 'Atlantic'")
+            app.title("Welcome! You're in 'Atlantic'")
         try:
             close(); sleep(2)
             print("Already Opened, Trying to re-open.."); sleep(2)
@@ -34,13 +38,22 @@ def main_window():
             print("Clicked once!")
             open_browser__1(code=code_selected, login=saved_user, password=saved_pass)
             print("Web_Driver Opened!")
-            sleep(2)  
+            sleep(2)
+        sleep(2)
+        button_2.grid(row=1,padx=20, pady=20)
+        button_3.grid(row=2,padx=20, pady=20)
+        button_4.grid(row=3,padx=20, pady=20)
+        button_5.grid(row=4,padx=20, pady=20)
+        button_6.grid(row=5,padx=20, pady=20)
     def click_2():
         print("clicked button 2!")
+        rel_checkin()
     def click_3():
         print("clicked button 3!")
+        rel_camareira()
     def click_4():
         print("clicked button 4!")
+        check_ins()
     def click_5():
         print("clicked button 5!")
     def option_menu_select(choice):
@@ -62,21 +75,17 @@ def main_window():
     # Buttons:
     button_1 = CTkButton(master=button_label_0, command=click_1, text='Abrir/iniciar', bg_color='transparent')
     button_1.grid(row=0,padx=20, pady=20)
+
     #
-    button_2 = CTkButton(master=button_label_0, command=click_2, text='relatorios de check-in', bg_color='transparent')
-    button_2.grid(row=1,padx=20, pady=20)
+    button_2 = CTkButton(master=button_label_0, command=click_2, text='relatorio de check-in', bg_color='transparent')
     #
     button_3 = CTkButton(master=button_label_0, command=click_3, text='relatorios \ncamareiras + governaça', bg_color='transparent')
-    button_3.grid(row=2,padx=20, pady=20)
     #
     button_4 = CTkButton(master=button_label_0, command=click_4, text='imprimir check-ins', bg_color='transparent')
-    button_4.grid(row=3,padx=20, pady=20)
     #
     button_5 = CTkButton(master=button_label_0, command=click_5, text='conferir UHs ocupados', bg_color='transparent')
-    button_5.grid(row=4,padx=20, pady=20)
     #
     button_6 = CTkButton(master=button_label_0, command=click_5, text='conferir UHs check-out', bg_color='transparent')
-    button_6.grid(row=5,padx=20, pady=20)
     # Checkbox:
     checkbox_1 = CTkCheckBox(master=check_label_1, text='quer os informativos junto?', command=checkbox_select, onvalue='On', offvalue='Off', variable=check_1_var)
     checkbox_1.grid(row=0, padx=20, pady=20)
@@ -89,7 +98,6 @@ def main_window():
     #
     user_pass = CTkEntry(master=check_label_1, placeholder_text='Write Password here')
     user_pass.grid(row=3, padx=20, pady=5)
-
     #
     button_ex = CTkButton(master=check_label_1,text="Salvar", command=save_user_info)
     
