@@ -9,16 +9,35 @@ def main_window():
 
     check_1_var = StringVar(value='Off')
     optionmenu_1 = StringVar(value='Selecione sua pousada aqui!')
-    
+    saved_user = ''; saved_pass = ''
     def save_user_info():
-        global saved_user, saved_pass
-        saved_user = ''; saved_pass = ''
+        global saved_pass, saved_user
         i = user_log.get(); saved_user = i
         I = user_pass.get(); saved_pass = I
+        last_log_index = len(i); last_pass_index = len(I)
+        print(last_log_index, last_pass_index)
+        if optionmenu_1_ == 'Amada Terra':
+            code_selected = code_ama; print(f"you've selected code:{code_selected}, for 'Amada terra'")
+            app.title("Welcome! You're in 'Amada terra'")
+        if optionmenu_1_ == 'Flor de magnolia':
+            code_selected = code_flo; print(f"you've selected code:{code_selected}, for 'Flor de magnolia'")
+            app.title("Welcome! You're in 'Flor de magnolia'")
+        if optionmenu_1_ == 'Atlantic':
+            code_selected = code_atl; print(f"you've selected code:{code_selected}, for 'Atlantic'")
+            app.title("Welcome! You're in 'Atlantic'")
+
         button_label_0.grid(row=0, column=0, padx=10, pady=(10, 0), sticky='nsew')
+        user_log.delete(first_index=0, last_index=last_log_index)
+        user_pass.delete(first_index=0, last_index=last_pass_index)
+        #if test_valid_log(code_selected, saved_user, saved_pass):
+        #    print("is it true?")
+        #    textbox_1.destroy()
+        #    textbox_2.grid(row=5, padx=10, pady=10)
+        #else:
+        #    print("or false?")
+        #    textbox_1.grid(row=6, padx=10, pady=10)
         print("Submted!")
     def click_1():
-        save_user_info()
         print("clicked button 1!")
         if optionmenu_1_ == 'Amada Terra':
             code_selected = code_ama; print(f"you've selected code:{code_selected}, for 'Amada terra'")
@@ -58,7 +77,7 @@ def main_window():
         print("clicked button 5!")
     def option_menu_select(choice):
         global optionmenu_1_
-        button_ex.grid(row=5, padx=10, pady=10)
+        button_ex.grid(row=4, padx=10, pady=10)
         print("You've selected: ", choice)
         optionmenu_1_ = choice
     def checkbox_select():
@@ -71,11 +90,17 @@ def main_window():
     check_label_1.grid(row=0, column=1, padx=5, pady=(10, 100))
     #self.checkbox_frame_1 = MyCheckboxFrame(self, values=["value 1", "value 2", "value 3"])
     #self.checkbox_frame_1.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="nsew")
-
+    # Textbox:
+    textbox_1 = CTkTextbox(check_label_1)
+    textbox_1.insert("0.0", "Usuario invalido!!!, Preencha com um login e senha corretos.")
+    textbox_1.configure(state="disable")
+    #
+    textbox_2 = CTkTextbox(check_label_1)
+    textbox_2.insert("0.0", "Usuario valido.")
+    textbox_2.configure(state="disable")
     # Buttons:
     button_1 = CTkButton(master=button_label_0, command=click_1, text='Abrir/iniciar', bg_color='transparent')
     button_1.grid(row=0,padx=20, pady=20)
-
     #
     button_2 = CTkButton(master=button_label_0, command=click_2, text='relatorio de check-in', bg_color='transparent')
     #

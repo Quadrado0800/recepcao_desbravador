@@ -25,14 +25,14 @@ day = str(day); today_month = str(today_month); print(f"Current day month and ye
 # Open a selenium browser for 'desbravador' with code of your pousada/hotel and check if user have a saved login 
 def open_browser__1(code, login=None, password=None):
     # Set the DRIVER and get in DESBRAVADOR for respective code
-    global driver
+    global driver, logi, passw, butt1
     driver = webdriver.Chrome(options); driver.get(f'https://desbravadorweb.com.br/acesso/{code}'); sleep(2)
-    log = driver.find_element(By.XPATH, "//*[@id=':r0:']")
+    logi = driver.find_element(By.XPATH, "//*[@id=':r0:']")
     passw = driver.find_element(By.XPATH, "//*[@id=':r1:']")
     butt1 = driver.find_element(By.XPATH, "//*[@id='login']/div/div[2]/div/div/form/div[6]/button")
     if (login == "isaac784" and code == code_ama): 
         print("Openning from secrets...")
-        log.send_keys("isaacjoaofreitas@gmail.com"); passw.send_keys("Batata0800")
+        logi.send_keys("isaacjoaofreitas@gmail.com"); passw.send_keys("Batata0800")
         butt1.click(); sleep(1.2)
         try:
             butt1.click()
@@ -41,7 +41,7 @@ def open_browser__1(code, login=None, password=None):
         sleep(2); driver.implicitly_wait(2)
     if (login == "isaac784" and code == code_atl): 
         print("Openning from secrets...")
-        log.send_keys("isaacjoaofreitas@gmail.com"); passw.send_keys("Batata0800")
+        logi.send_keys("isaacjoaofreitas@gmail.com"); passw.send_keys("Batata0800")
         butt1.click(); sleep(1.2)
         try:
             butt1.click()
@@ -57,7 +57,7 @@ def open_browser__1(code, login=None, password=None):
                 print('nonelog')
             else:
                 print(f"Loggin in with: \nuser:{login} ",'/',f"password:{password}")
-                log.send_keys(login)
+                logi.send_keys(login)
                 passw.send_keys(password)
                 butt1.click(); sleep(1.2)
                 try:
@@ -179,18 +179,39 @@ def rel_checkin():
         driver.get("https://desbravadorweb.com.br/#/mapaUh/"); sleep(1)
         print("------------------------------------------\nAll rel checkin should be printing-out! ")
 # Tkinter and CustomTkinter
-def close():
-    driver.close()
+# APP.PY
+
 # User functs
-#check_ins(code_ama, 'isaac')
-#sleep(2)
-#rel_checkin()
-#sleep(2)
-#rel_camareira()
-#sleep(2)
+def close():
+    print("Closing Web session...")
+    driver.close()
+
+def test_valid_log(code:str = str, loggg:str = None, pss:str = None) -> bool:
+    print("testing logi...")
+    test_opt = Options(); test_opt.add_argument('--start-maximized'); test_opt.add_argument('--headless=new')
+    driver_test = webdriver.Chrome(options=test_opt)
+    driver_test.get(f'https://desbravadorweb.com.br/acesso/{code}');
+    print("cash-trash", loggg, pss)
+    driver_test.find_element(By.XPATH, "//*[@id=':r0:']").send_keys(loggg)
+    driver_test.find_element(By.XPATH, "//*[@id=':r1:']").send_keys(pss)
+    butt2 = driver_test.find_element(By.XPATH, "//*[@id='login']/div/div[2]/div/div/form/div[6]/button");
+    butt2.click(); sleep(1.2)
+    try:
+        butt2.click()
+    except:
+        pass
+    try:
+        sleep(2)
+        driver_test.find_element(By.ID, 'titulo-conteudo')
+        print("Working..."); 
+        driver_test.close(); 
+        return True
+    except:
+        print("not in work-page");
+        return False
+
+
 print("All web_automation functions defined with sucess!")
-#check_ins(code_ama, user_='isaac')
-#sleep(200)
 
 # Very END high-way
 
