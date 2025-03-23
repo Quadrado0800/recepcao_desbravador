@@ -51,12 +51,12 @@ def open_browser__1(code, login=None, password=None):
     else:
         try:
             print("try1")
-            if password == '':
+            if password ==None:
                 print("nonepass")
-            if login =='' or 'isaac784':
+            if login ==None:
                 print('nonelog')
             else:
-                print(f"Loggin in with: \nuser:{login} ",'/',f"password:{password}")
+                print(f"Loggin in with: ")#\nuser:{login} ",'/',f"password:{password}")
                 logi.send_keys(login)
                 passw.send_keys(password)
                 butt1.click(); sleep(1.2)
@@ -100,12 +100,18 @@ def printable_pg__3_1(code):
     request = f"https://desbravadorweb.com.br/reserva/manter/gerarRelatorioConfirmacaoReserva/{code}?rel=true&mostraObservacao=false"
     driver.get(request); sleep(1)
 # Print-out current page and 'Ficha' doc
-def print_pg__3_2_1():
+def print_pg__3_2_1(infos, PATH):
     print("Printing page...")
     # Set configs to use default printer
     # Print 'Ficha-Hospedes.docx' from directly or from MAIN HOME and print current page(intend to be used in a loop)
     from win32api import ShellExecute as exe; from win32print import GetDefaultPrinter as std_printer; 
     global impressor; impressor = std_printer()
+    print(f"Path: {PATH}");  
+    if infos == True:
+        print("True on Infos... loading infos")
+        exe(0, "print", PATH, None, ".", 0)
+    if infos == False:
+        print("False on Infos... nothing to do, skiping")
     # Tenta imprimir do diretorio mais proximo, se não conseguir, procura diretamente na raiz.
     try:
         exe(0, "print", "Ficha-Hospedes.docx", None, ".", 0)
@@ -117,13 +123,14 @@ def print_pg__3_2_1():
     driver.execute_script('window.print();') # iniciando impressão da pagina aberta no chrome
     print("starting to print page...");                    sleep(9)
     print("All docs should be done now!\n------------------------------------------")
-# Print-out page and 'Ficha' 'leng' - times
-def PRINT__3_2(leng: int):
+# Print-out page and 'Ficha' 'leng' - times or maybe
+def PRINT__3_2(infos, list_room):
     # 'leng' is intended to be an int, as it will be used to print current page and 'Ficha', 'leng' times
-    for i in range(leng):
-        print_pg__3_2_1(); sleep(1.3)
+    for i in list_room:
+        PATHI = f"C:\\INFOS\\inf{i}- OLD -"
+        print_pg__3_2_1(infos, PATH=PATHI); sleep(1.3)
 # acess reserv_room and get docs to be print-out
-def view_acess_reserv__3() -> bool:
+def view_acess_reserv__3(infos) -> bool:
     # Get in every link from 'buttons_in_list_href' and search for 'rooms' information, as it will be used as 'leng' to 'PRINT__3_2' funct
     print("Started---- viewd_acess\n------------------------------------------")
     for link_reserv in buttons__in_list_href:
@@ -139,17 +146,18 @@ def view_acess_reserv__3() -> bool:
         strip_out_code = link_reserv.lstrip('https://desbravadorweb.com.br/acesso#/confirmacaoReserva/?idReserva='); sleep(1)
         printable_pg__3_1(strip_out_code)
         print("fixed rooms: ",rooms)
-        PRINT__3_2(len(rooms))
+        PRINT__3_2(infos, rooms)
         print("Reserv: ",strip_out_code); sleep(0.6)
         print("Done With scheduling the docs to print-out! --- \nyou're in: ", driver.current_url, "\nFor Code: ", strip_out_code, "\n------------------------------------------")
+    sleep(1); driver.get("https://desbravadorweb.com.br/#/mapaUh/"); sleep(1)
     print("All should be done! Just have to wait till all print-out for you.")
     driver.execute_script("alert('All check-ins printed!')")
     return True
 # Print all check-in
-def check_ins() -> bool:
+def check_ins(infos) -> bool:
     # print-out all check-ins and return true if concluded with sucess
     get_checkin_href__2()
-    view_acess_reserv__3()
+    view_acess_reserv__3(infos)
     return view_acess_reserv__3
 # Relatorios camareiras do dia:
 def rel_camareira():
@@ -178,9 +186,30 @@ def rel_checkin():
         sleep(4); driver.implicitly_wait(4)
         driver.get("https://desbravadorweb.com.br/#/mapaUh/"); sleep(1)
         print("------------------------------------------\nAll rel checkin should be printing-out! ")
+# Conf de UHS OCUPADOS
+def conf_uhs_ocupados():
+    print("Conf UHS OCUPADOS")
+    driver.get("https://desbravadorweb.com.br/#/mapaUh/"); sleep(2)
+    uhs_ocupados = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA no-padding")
+    uhs_ocupados_in_out = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding")
+    uhs_ocupados_out = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding"); sleep(1)
+    all_uhs_ocupados = uhs_ocupados + uhs_ocupados_in_out + uhs_ocupados_out
+    for uh in all_uhs_ocupados:
+        code_uh = uh.get_attribute('onclick')
+        split_code = code_uh.split("'")
+        print("codes: ",split_code)
+# Conf de UHS CHECK-OUT
+def conf_checkouts():
+    driver.get("https://desbravadorweb.com.br/#/mapaUh/"); sleep(2)
+    uhs_ocupados_in_out = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding")
+    uhs_ocupados_out = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding"); sleep(1)
+    all_uhs_out = uhs_ocupados_out + uhs_ocupados_in_out
+    for uh in all_uhs_out:
+        pass
 # Tkinter and CustomTkinter
 # APP.PY
-
+#    open_browser__1(code_ama,'isaac784'); sleep(1)
+#    conf_uhs_ocupados()
 # User functs
 def close():
     print("Closing Web session...")
