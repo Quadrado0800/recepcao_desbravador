@@ -37,7 +37,7 @@ def open_browser__1(code, login=None, password=None):
         try:
             butt1.click()
         except:
-            print("Goods 0.")
+            print("Goods.")
         sleep(2); driver.implicitly_wait(2)
     if (login == "isaac784" and code == code_atl): 
         print("Openning from secrets...")
@@ -50,13 +50,12 @@ def open_browser__1(code, login=None, password=None):
         sleep(2); driver.implicitly_wait(2)
     else:
         try:
-            print("try1")
             if password ==None:
                 print("nonepass")
             if login ==None:
                 print('nonelog')
             else:
-                print(f"Loggin in with: ")#\nuser:{login} ",'/',f"password:{password}")
+                #print(f"Loggin in with: ")#\nuser:{login} ",'/',f"password:{password}")
                 logi.send_keys(login)
                 passw.send_keys(password)
                 butt1.click(); sleep(1.2)
@@ -65,7 +64,6 @@ def open_browser__1(code, login=None, password=None):
                 except:
                     print('butt 1 clicked with login and passwords!')
         except:
-            print('over1')
             WebDriverWait(driver, 99999).until(EC.url_contains(("/#/")))
             sleep(2); driver.implicitly_wait(2)
 # Get all 'codes' From href in check-ins from today(actual day)
@@ -187,30 +185,42 @@ def rel_checkin():
         driver.get("https://desbravadorweb.com.br/#/mapaUh/"); sleep(1)
         print("------------------------------------------\nAll rel checkin should be printing-out! ")
 # Conf de UHS OCUPADOS
+def loop_trough(all_uhs_:list, out:bool):
+    UH_CODES_IN = []
+    for uh in all_uhs_:
+        code_uh = uh.get_attribute('onclick'); split_code = code_uh.split("'"); useless = split_code[1] ;code_link_uh = useless
+        LINK_CODE = f"https://desbravadorweb.com.br/#{code_link_uh}"
+        UH_CODES_IN.append(LINK_CODE)
+    for in_uh in UH_CODES_IN:
+        print("you're in url: ",in_uh)
+        driver.get(in_uh); sleep(2)
+
+        input("enter to get to next")
+        #sleep(90)
+    print('\n\n\n\n\n\n\n\n\n', "Done with viewing uhs!!!")
 def conf_uhs_ocupados():
     print("Conf UHS OCUPADOS")
+    all_uhs_ocupados = []
     driver.get("https://desbravadorweb.com.br/#/mapaUh/"); sleep(2)
-    uhs_ocupados = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA no-padding")
-    uhs_ocupados_in_out = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding")
-    uhs_ocupados_out = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding"); sleep(1)
+    uhs_ocupados_in_out = driver.find_elements(By.XPATH ,"//*[@class='btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding']"); sleep(0.8);uhs_ocupados_out = driver.find_elements(By.XPATH ,"//*[@class='btn btn-popover-grande OCUPADA_CHECKOUT no-padding']"); sleep(1.20); 
+    print("in_out: ",uhs_ocupados_in_out)
+    uhs_ocupados = driver.find_elements(By.XPATH ,"//*[@class='btn btn-popover-grande OCUPADA no-padding']"); sleep(0.8);
+    print(f"ocupados:{uhs_ocupados}\nin_out:{uhs_ocupados_in_out}\nOut:{uhs_ocupados_out}")
     all_uhs_ocupados = uhs_ocupados + uhs_ocupados_in_out + uhs_ocupados_out
-    for uh in all_uhs_ocupados:
-        code_uh = uh.get_attribute('onclick')
-        split_code = code_uh.split("'")
-        print("codes: ",split_code)
+    print("\n\n\n", all_uhs_ocupados)
+    loop_trough(uhs_ocupados_in_out, False)
+    loop_trough(uhs_ocupados_out, False)
+    loop_trough(all_uhs_ocupados, False); sleep(1)
+    driver.get("https://desbravadorweb.com.br/#/mapaUh/")
+
 # Conf de UHS CHECK-OUT
 def conf_checkouts():
     driver.get("https://desbravadorweb.com.br/#/mapaUh/"); sleep(2)
-    uhs_ocupados_in_out = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding")
-    uhs_ocupados_out = driver.find_elements(By.CLASS_NAME ,"btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding"); sleep(1)
-    all_uhs_out = uhs_ocupados_out + uhs_ocupados_in_out
-    for uh in all_uhs_out:
-        pass
-# Tkinter and CustomTkinter
-# APP.PY
-#    open_browser__1(code_ama,'isaac784'); sleep(1)
-#    conf_uhs_ocupados()
-# User functs
+    uhs_ocupados_in_out = driver.find_elements(By.XPATH ,"//*[@class='btn btn-popover-grande OCUPADA_CHECKIN_CHECKOUT no-padding']"); sleep(0.8);uhs_ocupados_out = driver.find_elements(By.XPATH ,"//*[@class='btn btn-popover-grande OCUPADA_CHECKOUT no-padding']"); sleep(1.20); all_uhs_out = uhs_ocupados_out + uhs_ocupados_in_out
+    loop_trough(all_uhs_out, True); sleep(1)
+    driver.get("https://desbravadorweb.com.br/#/mapaUh/")
+
+# User funct to close
 def close():
     print("Closing Web session...")
     driver.close()

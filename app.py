@@ -92,7 +92,7 @@ def main_window():
         global str_check_var
         check_var_char = check_1_var.get(); str_check_var = check_var_char
     button_label_0 = CTkFrame(master=app)
-    
+    str_check_var = "Off"
     # Label:
     check_label_1 = CTkLabel(master=app,fg_color='gray90', text='option menu')
     check_label_1.grid(row=0, column=1, padx=5, pady=(10, 100))
