@@ -4,5 +4,4 @@ Personal projects of automation and UI for recep with 'desbravador lightweb' sit
 libs included:
 - selenium
 - customtkinter
-- thread
 - win32
